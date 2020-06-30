@@ -1,6 +1,8 @@
 package com.codepath.apps.restclienttemplate.models;
 
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +16,7 @@ public class Tweet {
     public String body;
     public String createdAt;
     public User user;
+    public String embeddedMediaUrl;
 
     // Empty constructor for Parcel lib
     public Tweet() { }
@@ -23,6 +26,14 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+        JSONObject entitiesObject = jsonObject.getJSONObject("entities");
+        if (entitiesObject.has("media")) {
+            JSONArray mediaArray = entitiesObject.getJSONArray("media");
+            tweet.embeddedMediaUrl = mediaArray.getJSONObject(0).getString("media_url_https");
+            Log.i("Tweet", "Media: " + tweet.embeddedMediaUrl);
+        } else {
+            Log.i("Tweet", "no media");
+        }
         return tweet;
     }
 

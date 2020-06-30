@@ -34,4 +34,13 @@
         android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/profileImageView"
         tools:text="This is my tweet" />
+
+    <ImageView
+        android:id="@+id/embeddedImageView"
+        android:layout_width="345dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/bodyTextView"
+        android:layout_marginStart="0dp"
+        android:layout_toEndOf="@+id/profileImageView"
+        tools:srcCompat="@tools:sample/avatars" />
 </RelativeLayout>

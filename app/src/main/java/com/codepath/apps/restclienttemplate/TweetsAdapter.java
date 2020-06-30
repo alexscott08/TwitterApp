@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.util.List;
@@ -66,18 +66,31 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageView profileImageView;
         TextView bodyTextView;
         TextView screenNameTextView;
+        ImageView embeddedImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             profileImageView = itemView.findViewById(R.id.profileImageView);
             bodyTextView = itemView.findViewById(R.id.bodyTextView);
             screenNameTextView = itemView.findViewById(R.id.screenNameTextView);
+            embeddedImageView = itemView.findViewById(R.id.embeddedImageView);
         }
 
         public void bind(Tweet tweet) {
             bodyTextView.setText(tweet.body);
             screenNameTextView.setText(tweet.user.screenName);
-            Glide.with(context).load(tweet.user.profileImageUrl).into(profileImageView);
+            GlideApp.with(context).load(tweet.user.profileImageUrl).transform(new CircleCrop()).into(profileImageView);
+
+            if (tweet.embeddedMediaUrl != null) {
+                int radius = 30; // corner radius, higher value = more rounded
+                int margin = 10; // crop margin, set to 0 for corners with no crop
+                embeddedImageView.setVisibility(View.VISIBLE);
+                GlideApp.with(context).load(tweet.embeddedMediaUrl).centerCrop()
+                        .into(embeddedImageView);
+            } else {
+                embeddedImageView.setVisibility(View.GONE);
+            }
+
         }
     }
 }
