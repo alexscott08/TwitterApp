@@ -65,25 +65,32 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         ImageView profileImageView;
         TextView bodyTextView;
+        TextView nameTextView;
         TextView screenNameTextView;
         ImageView embeddedImageView;
+        TextView retweetTextView;
+        TextView favTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             profileImageView = itemView.findViewById(R.id.profileImageView);
             bodyTextView = itemView.findViewById(R.id.bodyTextView);
+            nameTextView = itemView.findViewById(R.id.nameTextView);
             screenNameTextView = itemView.findViewById(R.id.screenNameTextView);
             embeddedImageView = itemView.findViewById(R.id.embeddedImageView);
+            retweetTextView = itemView.findViewById(R.id.retweetTextView);
+            favTextView = itemView.findViewById(R.id.favTextView);
         }
 
         public void bind(Tweet tweet) {
             bodyTextView.setText(tweet.body);
-            screenNameTextView.setText(tweet.user.screenName);
+            screenNameTextView.setText("@" + tweet.user.screenName);
+            nameTextView.setText(tweet.user.name);
+            retweetTextView.setText(tweet.retweetCount + "");
+            favTextView.setText(tweet.favoriteCount + "");
             GlideApp.with(context).load(tweet.user.profileImageUrl).transform(new CircleCrop()).into(profileImageView);
 
             if (tweet.embeddedMediaUrl != null) {
-                int radius = 30; // corner radius, higher value = more rounded
-                int margin = 10; // crop margin, set to 0 for corners with no crop
                 embeddedImageView.setVisibility(View.VISIBLE);
                 GlideApp.with(context).load(tweet.embeddedMediaUrl).centerCrop()
                         .into(embeddedImageView);

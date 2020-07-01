@@ -35,6 +35,7 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetsAdapter adapter;
     SwipeRefreshLayout swipeContainer;
+//    int lowestMaxId = Integer.MAX_VALUE;
 
 
     @Override
@@ -114,6 +115,13 @@ public class TimelineActivity extends AppCompatActivity {
                 try {
                     adapter.clear();
                     adapter.addAll(Tweet.fromJsonArray(jsonArray));
+//                    if (tweets.get(tweets.size() - 1).id < lowestMaxId) {
+//                        if (tweets.get(tweets.size() - 1).id > 1) {
+//                            lowestMaxId = tweets.get(tweets.size() - 1).id - 1;
+//                        } else {
+//                            lowestMaxId = 0;
+//                        }
+//                    }
                     // Now we call setRefreshing(false) to signal refresh has finished
                     swipeContainer.setRefreshing(false);
                 } catch (JSONException e) {

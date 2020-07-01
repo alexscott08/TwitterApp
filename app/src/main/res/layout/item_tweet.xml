@@ -17,19 +17,20 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/screenNameTextView"
+        android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/profileImageView"
+        android:textStyle="bold"
         tools:text="axs08" />
 
     <TextView
         android:id="@+id/bodyTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/screenNameTextView"
+        android:layout_below="@+id/nameTextView"
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/profileImageView"
@@ -43,4 +44,54 @@
         android:layout_marginStart="0dp"
         android:layout_toEndOf="@+id/profileImageView"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/screenNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/nameTextView"
+        tools:text="@axs08" />
+
+    <ImageView
+        android:id="@+id/retweetImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/embeddedImageView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="139dp"
+        android:layout_marginTop="5dp"
+        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+
+    <TextView
+        android:id="@+id/retweetTextView"
+        android:layout_width="69dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/embeddedImageView"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/retweetImageView"
+        tools:text="1000000" />
+
+    <ImageView
+        android:id="@+id/favImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/embeddedImageView"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="6dp"
+        android:layout_toEndOf="@+id/retweetTextView"
+        app:srcCompat="@drawable/ic_vector_heart_stroke" />
+
+    <TextView
+        android:id="@+id/favTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/embeddedImageView"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/favImageView"
+        tools:text="50" />
+
 </RelativeLayout>

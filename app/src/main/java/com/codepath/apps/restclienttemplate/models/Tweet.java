@@ -17,6 +17,9 @@ public class Tweet {
     public String createdAt;
     public User user;
     public String embeddedMediaUrl;
+    public int retweetCount;
+    public int favoriteCount;
+//    public int id;
 
     // Empty constructor for Parcel lib
     public Tweet() { }
@@ -26,6 +29,11 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+        tweet.retweetCount = jsonObject.getInt("retweet_count");
+        tweet.favoriteCount = jsonObject.getInt("favorite_count");
+//        tweet.id = jsonObject.getInt("id");
+
+        // Pulls embedded media, if it exists
         JSONObject entitiesObject = jsonObject.getJSONObject("entities");
         if (entitiesObject.has("media")) {
             JSONArray mediaArray = entitiesObject.getJSONArray("media");
