@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -37,7 +39,7 @@ public class TimelineActivity extends AppCompatActivity {
     TweetsAdapter adapter;
     SwipeRefreshLayout swipeContainer;
     EndlessRecyclerViewScrollListener scrollListener;
-//    int lowestMaxId = Integer.MAX_VALUE;
+
 
 
     @Override
@@ -55,6 +57,8 @@ public class TimelineActivity extends AppCompatActivity {
 //        getSupportActionBar().setCustomView(R.layout.actionbar_title);
 
         swipeContainer = findViewById(R.id.swipeContainer);
+
+
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
@@ -68,7 +72,6 @@ public class TimelineActivity extends AppCompatActivity {
                 populateHomeTimeline();
             }
         });
-
         // Find the RV
         tweetsRecyclerView = findViewById(R.id.tweetsRecyclerView);
         // Init the list of tweets and adapter
@@ -90,6 +93,8 @@ public class TimelineActivity extends AppCompatActivity {
         // Adds the scroll listener to RecyclerView
         tweetsRecyclerView.addOnScrollListener(scrollListener);
         populateHomeTimeline();
+
+
     }
 
     private void loadNextDataFromApi(int offset) {
@@ -177,4 +182,6 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -31,7 +32,7 @@ public class TwitterClient extends OAuthBaseClient {
 
 	// See https://developer.chrome.com/multidevice/android/intents
 	public static final String REST_CALLBACK_URL_TEMPLATE = "intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
-
+	public static final String TAG = "TwitterClient";
 	public TwitterClient(Context context) {
 		super(context, REST_API_INSTANCE,
 				REST_URL,
@@ -41,18 +42,18 @@ public class TwitterClient extends OAuthBaseClient {
 				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(R.string.intent_host),
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
-	// CHANGE THIS
+
 	// DEFINE METHODS for different API endpoints here
 	public void getHomeTimeline(JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", "25");
-//		params.put("max_id", 0);
 		params.put("since_id", 1);
 
 		client.get(apiUrl, params, handler);
 	}
+
 
 	public void publishTweet(String tweetContent, JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/update.json");
@@ -67,10 +68,39 @@ public class TwitterClient extends OAuthBaseClient {
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", "25");
-		params.put("max_id", maxId);
+		params.put("max_id", maxId - 1);
 
 		client.get(apiUrl, params, handler);
 	}
+
+	public void favoriteTweet(boolean favorite, long tweetId, JsonHttpResponseHandler handler) {
+		String apiUrl;
+		if (favorite) {
+			apiUrl = getApiUrl("favorites/create.json");
+		} else {
+			apiUrl = getApiUrl("favorites/destroy.json");
+		}
+		// Can specify query string params directly or through RequestParams.
+		Log.i(TAG, apiUrl);
+		RequestParams params = new RequestParams();
+		params.put("id", tweetId);
+		client.post(apiUrl, params, "",  handler);
+	}
+
+	public void retweetTweet(boolean retweeted, long tweetId, JsonHttpResponseHandler handler) {
+		String apiUrl;
+		if (retweeted) {
+			apiUrl = getApiUrl("statuses/retweet/" + tweetId + ".json");
+		} else {
+			apiUrl = getApiUrl("statuses/unretweet/" + tweetId + ".json");
+		}
+		// Can specify query string params directly or through RequestParams.
+		Log.i(TAG, apiUrl);
+		RequestParams params = new RequestParams();
+		params.put("id", tweetId);
+		client.post(apiUrl, params, "",  handler);
+	}
+
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)
