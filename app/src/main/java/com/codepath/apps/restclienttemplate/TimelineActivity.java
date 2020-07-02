@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,7 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetsAdapter adapter;
     SwipeRefreshLayout swipeContainer;
+    EndlessRecyclerViewScrollListener scrollListener;
 //    int lowestMaxId = Integer.MAX_VALUE;
 
 
@@ -44,6 +46,13 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         client = TwitterApp.getRestClient(this);
+
+        getSupportActionBar().setTitle("Twitter");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_vector_twitter_actionbar);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        getSupportActionBar().setCustomView(R.layout.actionbar_title);
 
         swipeContainer = findViewById(R.id.swipeContainer);
         // Configure the refreshing colors
@@ -65,13 +74,52 @@ public class TimelineActivity extends AppCompatActivity {
         // Init the list of tweets and adapter
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, tweets);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         // RV setup: layout manager and the adapter
-        tweetsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tweetsRecyclerView.setLayoutManager(layoutManager);
         tweetsRecyclerView.setAdapter(adapter);
 
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i(TAG, "onLoadMore: " + page);
+                loadNextDataFromApi(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        tweetsRecyclerView.addOnScrollListener(scrollListener);
         populateHomeTimeline();
     }
 
+    private void loadNextDataFromApi(int offset) {
+        // Send an API request to retrieve appropriate paginated data
+        client.getNextPageOfTweets(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, "onSuccess for loadMoreData! " + json.toString());
+                //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+                //  --> Deserialize and construct new model objects from the API response
+                JSONArray jsonArray = json.jsonArray;
+                try {
+                    List<Tweet> tweets = Tweet.fromJsonArray(jsonArray);
+                    //  --> Append the new data objects to the existing set of items inside the array of items
+                    //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+                    adapter.addAll(tweets);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.i(TAG, "onFailure for loadMoreData! ", throwable);
+            }
+        }, tweets.get(tweets.size() - 1).id);
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -115,13 +163,6 @@ public class TimelineActivity extends AppCompatActivity {
                 try {
                     adapter.clear();
                     adapter.addAll(Tweet.fromJsonArray(jsonArray));
-//                    if (tweets.get(tweets.size() - 1).id < lowestMaxId) {
-//                        if (tweets.get(tweets.size() - 1).id > 1) {
-//                            lowestMaxId = tweets.get(tweets.size() - 1).id - 1;
-//                        } else {
-//                            lowestMaxId = 0;
-//                        }
-//                    }
                     // Now we call setRefreshing(false) to signal refresh has finished
                     swipeContainer.setRefreshing(false);
                 } catch (JSONException e) {

@@ -19,7 +19,7 @@ public class Tweet {
     public String embeddedMediaUrl;
     public int retweetCount;
     public int favoriteCount;
-//    public int id;
+    public long id;
 
     // Empty constructor for Parcel lib
     public Tweet() { }
@@ -31,6 +31,7 @@ public class Tweet {
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.retweetCount = jsonObject.getInt("retweet_count");
         tweet.favoriteCount = jsonObject.getInt("favorite_count");
+        tweet.id = jsonObject.getLong("id");
 //        tweet.id = jsonObject.getInt("id");
 
         // Pulls embedded media, if it exists
