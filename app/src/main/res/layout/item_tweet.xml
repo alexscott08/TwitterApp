@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp">
 
     <ImageView
@@ -98,7 +98,7 @@
         android:layout_below="@+id/embeddedImageView"
         android:layout_marginStart="46dp"
         android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/replyBtn"
+        android:layout_toEndOf="@+id/tweetReplyBtn"
         android:background="#FFFFFF"
         android:backgroundTint="#FFFFFF"
         app:srcCompat="@drawable/ic_vector_retweet_stroke" />
@@ -115,7 +115,7 @@
         app:srcCompat="@drawable/ic_vector_heart_stroke" />
 
     <Button
-        android:id="@+id/replyBtn"
+        android:id="@+id/tweetReplyBtn"
         android:layout_width="43dp"
         android:layout_height="17dp"
         android:layout_below="@+id/embeddedImageView"

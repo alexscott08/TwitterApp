@@ -88,7 +88,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView dateTextView;
         ImageButton retweetImgBtn;
         ImageButton favImgBtn;
-        Button replyBtn;
+        Button tweetReplyBtn;
         boolean retweeted = false;
         boolean favorited = false;
 
@@ -105,7 +105,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             dateTextView = itemView.findViewById(R.id.dateTextView);
             retweetImgBtn = itemView.findViewById(R.id.retweetImgBtn);
             favImgBtn = itemView.findViewById(R.id.favImgBtn);
-            replyBtn = itemView.findViewById(R.id.replyBtn);
+            tweetReplyBtn = itemView.findViewById(R.id.tweetReplyBtn);
         }
 
         public void bind(final Tweet tweet) {
@@ -143,11 +143,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 }
             });
 
-            replyBtn.setOnClickListener(new View.OnClickListener() {
+            tweetReplyBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ComposeActivity.class);
-                    intent.putExtra("reply id", tweet.id);
+                    Intent intent = new Intent(context, ReplyActivity.class);
+                    intent.putExtra("id", tweet.id);
+                    intent.putExtra("username", tweet.user.screenName);
                     context.startActivity(intent);
                 }
             });
