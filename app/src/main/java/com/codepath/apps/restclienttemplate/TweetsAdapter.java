@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -23,6 +24,7 @@ import org.json.JSONArray;
 
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import okhttp3.Headers;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
@@ -119,9 +121,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             GlideApp.with(context).load(tweet.user.profileImageUrl).transform(new CircleCrop()).into(profileImageView);
 
             // Adds image to tweet view if available
+            int radius = 10;
+            int margin = 30;
             if (tweet.embeddedMediaUrl != null) {
                 embeddedImageView.setVisibility(View.VISIBLE);
-                GlideApp.with(context).load(tweet.embeddedMediaUrl).centerCrop()
+                GlideApp.with(context).load(tweet.embeddedMediaUrl).transform(new CenterCrop(), new RoundedCornersTransformation(radius, margin))
                         .into(embeddedImageView);
             } else {
                 embeddedImageView.setVisibility(View.GONE);

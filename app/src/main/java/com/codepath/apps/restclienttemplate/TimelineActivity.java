@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -45,16 +46,18 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
+
+
+        ActivityTimelineBinding binding = ActivityTimelineBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         client = TwitterApp.getRestClient(this);
 
-        getSupportActionBar().setTitle("Twitter");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_vector_twitter_actionbar);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-//        getSupportActionBar().setCustomView(R.layout.actionbar_title);
 
         swipeContainer = findViewById(R.id.swipeContainer);
 
@@ -72,6 +75,7 @@ public class TimelineActivity extends AppCompatActivity {
                 populateHomeTimeline();
             }
         });
+
         // Find the RV
         tweetsRecyclerView = findViewById(R.id.tweetsRecyclerView);
         // Init the list of tweets and adapter
@@ -79,6 +83,7 @@ public class TimelineActivity extends AppCompatActivity {
         adapter = new TweetsAdapter(this, tweets);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
         // RV setup: layout manager and the adapter
         tweetsRecyclerView.setLayoutManager(layoutManager);
         tweetsRecyclerView.setAdapter(adapter);
@@ -90,6 +95,7 @@ public class TimelineActivity extends AppCompatActivity {
                 loadNextDataFromApi(page);
             }
         };
+
         // Adds the scroll listener to RecyclerView
         tweetsRecyclerView.addOnScrollListener(scrollListener);
         populateHomeTimeline();
