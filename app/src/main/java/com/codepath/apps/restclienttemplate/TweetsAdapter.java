@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -164,33 +165,52 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         }
 
         // Makes call to add favorite status to server
-        private void favoriteTweet(boolean favorited, long tweetId) {
+        private void favoriteTweet(final boolean favorited, long tweetId) {
             client.favoriteTweet(favorited, tweetId, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
                     Log.i(TAG, "onSuccess!" + json.toString());
-                    JSONArray jsonArray = json.jsonArray;
+                    if (favorited) {
+                        Toast.makeText(context, "Favorited!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Unfavorited!", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                     Log.e(TAG, "onFailure", throwable);
+                    if (favorited) {
+                        Toast.makeText(context, "Couldn't unfavorite tweet. Please try again.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Couldn't favorite tweet. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
 
-        // Makes call to add retweet status to server
-        private void retweetTweet(boolean retweeted, long tweetId) {
+        // Makes call to add retweet status to server plus a toast on success/failure
+        private void retweetTweet(final boolean retweeted, long tweetId) {
             client.retweetTweet(retweeted, tweetId, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
                     Log.i(TAG, "onSuccess!" + json.toString());
-                    JSONArray jsonArray = json.jsonArray;
+                    Toast.makeText(context, "Retweeted!", Toast.LENGTH_SHORT).show();
+                    if (favorited) {
+                        Toast.makeText(context, "Retweeted!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Unretweeted!", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                     Log.e(TAG, "onFailure", throwable);
+                    if (retweeted) {
+                        Toast.makeText(context, "Couldn't unretweet. Please try again.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Couldn't retweet. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
