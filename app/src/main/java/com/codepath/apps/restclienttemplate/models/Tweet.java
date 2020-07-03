@@ -23,6 +23,7 @@ public class Tweet {
     public int retweetCount;
     public int favoriteCount;
     public long id;
+    public String replyTo;
     public String dateCreated;
     public String formattedDate;
     public boolean userFavorited;
@@ -34,7 +35,12 @@ public class Tweet {
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
-        tweet.body = jsonObject.getString("text");
+        tweet.replyTo = jsonObject.getString("in_reply_to_screen_name");
+        if (!tweet.replyTo.equals("null")) {
+            tweet.body = "Replying to @" + tweet.replyTo + "\n" + jsonObject.getString("text");
+        } else {
+            tweet.body = jsonObject.getString("text");
+        }
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.retweetCount = jsonObject.getInt("retweet_count");
@@ -44,6 +50,7 @@ public class Tweet {
         tweet.formattedDate = getRelativeTimeAgo(tweet.dateCreated);
         tweet.userFavorited = jsonObject.getBoolean("favorited");
         tweet.userRetweeted = jsonObject.getBoolean("retweeted");
+
 
         // Pulls embedded media, if it exists
         JSONObject entitiesObject = jsonObject.getJSONObject("entities");
