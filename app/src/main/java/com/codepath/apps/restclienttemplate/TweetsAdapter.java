@@ -133,16 +133,21 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             // Updates retweet and favorite status of tweets with onClickListener
             retweeted = tweet.userRetweeted;
+            checkRetweet(tweet);
             retweetImgBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                   updateRetweet(tweet);
-                   retweetTweet(retweeted, tweet.id);
+                    retweeted = !retweeted;
+                    checkRetweet(tweet);
+                    retweetTweet(retweeted, tweet.id);
                 }
             });
+
             favorited = tweet.userFavorited;
+            checkFav(tweet);
             favImgBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    updateFav(tweet);
+                    favorited = !favorited;
+                    checkFav(tweet);
                     favoriteTweet(favorited, tweet.id);
                 }
             });
@@ -163,7 +168,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             client.favoriteTweet(favorited, tweetId, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
-                    Log.i(TAG, "onSuccess!" +json.toString());
+                    Log.i(TAG, "onSuccess!" + json.toString());
                     JSONArray jsonArray = json.jsonArray;
                 }
 
@@ -179,7 +184,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             client.retweetTweet(retweeted, tweetId, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
-                    Log.i(TAG, "onSuccess!" +json.toString());
+                    Log.i(TAG, "onSuccess!" + json.toString());
                     JSONArray jsonArray = json.jsonArray;
                 }
 
@@ -191,24 +196,20 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         }
 
         // Sets favorited status for tweets
-        private void updateFav(Tweet tweet) {
+        private void checkFav(Tweet tweet) {
             if (!favorited) {
-                favImgBtn.setImageResource(R.drawable.ic_vector_heart);
-                favorited = true;
-            } else {
                 favImgBtn.setImageResource(R.drawable.ic_vector_heart_stroke);
-                favorited = false;
+            } else {
+                favImgBtn.setImageResource(R.drawable.ic_vector_heart);
             }
         }
 
         // Sets retweeted status for tweets
-        private void updateRetweet(Tweet tweet) {
+        private void checkRetweet(Tweet tweet) {
             if (!retweeted) {
-                retweetImgBtn.setImageResource(R.drawable.ic_vector_reply);
-                retweeted = true;
-            } else {
                 retweetImgBtn.setImageResource(R.drawable.ic_vector_retweet_stroke);
-                retweeted = false;
+            } else {
+                retweetImgBtn.setImageResource(R.drawable.ic_vector_reply);
             }
         }
     }
