@@ -1,11 +1,8 @@
 package com.codepath.apps.restclienttemplate;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +35,6 @@ public class ComposeActivity extends AppCompatActivity {
         // layout of activity is stored in a special property called root
         View view = binding.getRoot();
         setContentView(view);
-//        setContentView(R.layout.activity_compose);
 
         client = TwitterApp.getRestClient(this);
 

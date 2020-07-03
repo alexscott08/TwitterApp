@@ -6,7 +6,6 @@ import android.util.Log;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.oauth.OAuthBaseClient;
-import com.github.scribejava.apis.FlickrApi;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
 
@@ -43,7 +42,15 @@ public class TwitterClient extends OAuthBaseClient {
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
 
-	// DEFINE METHODS for different API endpoints here
+	// Different API endpoints
+	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
+	 * 	  i.e getApiUrl("statuses/home_timeline.json");
+	 * 2. Define the parameters to pass to the request (query or body)
+	 *    i.e RequestParams params = new RequestParams("foo", "bar");
+	 * 3. Define the request method and make a call to the client
+	 *    i.e client.get(apiUrl, params, handler);
+	 *    i.e client.post(apiUrl, params, handler);
+	 */
 	public void getHomeTimeline(JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
@@ -104,13 +111,4 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("id", tweetId);
 		client.post(apiUrl, params, "",  handler);
 	}
-
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
-	 */
 }

@@ -34,7 +34,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     List<Tweet> tweets;
     private TwitterClient client;
     public static final String TAG = "TweetsAdapter";
-    SwipeRefreshLayout swipeContainer;
     private TweetsAdapter adapter;
 
     public TweetsAdapter(Context context, List<Tweet> tweets) {
@@ -125,7 +124,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             int margin = 30;
             if (tweet.embeddedMediaUrl != null) {
                 embeddedImageView.setVisibility(View.VISIBLE);
-                GlideApp.with(context).load(tweet.embeddedMediaUrl).transform(new CenterCrop(), new RoundedCornersTransformation(radius, margin))
+                GlideApp.with(context).load(tweet.embeddedMediaUrl).transform(new CenterCrop(),
+                        new RoundedCornersTransformation(radius, margin))
                         .into(embeddedImageView);
             } else {
                 embeddedImageView.setVisibility(View.GONE);
@@ -156,8 +156,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     context.startActivity(intent);
                 }
             });
-
         }
+
+        // Makes call to add favorite status to server
         private void favoriteTweet(boolean favorited, long tweetId) {
             client.favoriteTweet(favorited, tweetId, new JsonHttpResponseHandler() {
                 @Override
@@ -173,6 +174,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             });
         }
 
+        // Makes call to add retweet status to server
         private void retweetTweet(boolean retweeted, long tweetId) {
             client.retweetTweet(retweeted, tweetId, new JsonHttpResponseHandler() {
                 @Override
