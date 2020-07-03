@@ -56,11 +56,11 @@ public class ReplyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String tweetContent = replyEditText.getText().toString();
                 if (tweetContent.isEmpty()) {
-                    Toast.makeText(ReplyActivity.this, "Sorry, your tweet cannot be empty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReplyActivity.this, "Sorry, your reply cannot be empty", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (tweetContent.length() > MAX_TWEET_LENGTH) {
-                    Toast.makeText(ReplyActivity.this, "Sorry, your tweet is too long", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReplyActivity.this, "Sorry, your reply is too long", Toast.LENGTH_LONG).show();
                     return;
                 }
                 Toast.makeText(ReplyActivity.this, tweetContent, Toast.LENGTH_LONG).show();
@@ -70,9 +70,9 @@ public class ReplyActivity extends AppCompatActivity {
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
                         try {
                             Tweet tweet = Tweet.fromJson(json.jsonObject);
-                            Log.i(TAG, "Published tweet says: " + tweet.body);
+                            Log.i(TAG, "Published reply says: " + tweet.body);
                             Intent intent = new Intent();
-                            intent.putExtra("tweet", Parcels.wrap(tweet));
+                            intent.putExtra("reply", Parcels.wrap(tweet));
                             // Set result code and bundle data for response
                             setResult(RESULT_OK, intent);
                             // Closes the activity, pass data to parent
@@ -83,7 +83,7 @@ public class ReplyActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        Log.e(TAG, "onFailure to publish tweet", throwable);
+                        Log.e(TAG, "onFailure to publish reply", throwable);
                     }
                 });
             }
