@@ -48,7 +48,7 @@ GIF created with [Kap](https://getkap.co/).
 
 ## Notes
 
-It took me awhile to implement the favorite/retweet functions and also keeping those statuses (with the updated images) after refresh. Also when replying to tweets, it does reply to the thread but it does not show that it was a replied tweet on the app.
+It took me awhile to implement the favorite/retweet functions and also keeping those statuses (with the updated images) after refresh.
 
 ## Open-source libraries used
 
